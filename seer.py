@@ -15,7 +15,7 @@ from medspacy.visualization import visualize_ent
 from spacy_streamlit import visualize_parser
 
 
-st.title('S.E.E.R: System for Efficient Encoding and Reference')
+st.title('⚕️ S.E.E.R: System for Efficient Encoding and Reference')
 uploaded_file = st.file_uploader("Choose a file")
 
 # @st.cache(allow_output_mutation=True)
@@ -81,10 +81,12 @@ if(uploaded_file is not None):
   print("Successfully read the file!")
   nlp=loading_ml_model()
   print("Completed loading the NLP model.")
-  st.markdown('**Successfully loaded NLP model.**')
+  # st.markdown('**Successfully loaded NLP model.**')
+  st.success('Successfully loaded the medspacy model.')
   if st.button('Extract'):
     st.subheader('Extracted Data:')
-    st.markdown('Note: _The  first page of PDF is only considered for processing_!')
+    st.info('The  first page of PDF is only considered for processing!')
+   # st.markdown('Note: _The  first page of PDF is only considered for processing_!')
     number_of_pages = len(reader.pages)
     page = reader.pages[0]
     text_data = page.extract_text()
