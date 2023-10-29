@@ -1,0 +1,6 @@
+pandas
+spacy
+PyPDF2
+medspacy
+spacy_streamlit
+
