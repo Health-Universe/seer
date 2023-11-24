@@ -3,35 +3,46 @@ import streamlit as st
 def main():
     st.title('⚕️ S.E.E.R: System for Efficient Encoding and Reference')
 
+    button_a = st.button("Search for ICD Codes")
+    button_b = st.button("Search for Symptoms")
 
-    selected_tile = st.sidebar.radio("Select Tile", ['Search for ICD Codes', 'Search for Symptoms'])
-
-
-    if selected_tile == 'Search for ICD Codes':
-        st.header("ICD Code search")
+    if button_a:
         expand_tile_a()
-    elif selected_tile == 'Search for Symptoms':
-        st.header("Symptoms type search")
+
+    if button_b:
         expand_tile_b()
 
 def expand_tile_a():
+
+    st.header("ICD Code Search")
     st.write("You can use the option to search for ICD Codes and identify the diseases")
 
-    if st.button("Enter Code"):
-        show_search_bar('A')
+
+    search_query = st.text_input("")
+
+    # Add functionality here
+    if st.button("Search"):
+        perform_search_tile_a(search_query)
 
 def expand_tile_b():
+ 
+    st.header("Search for Symptoms")
     st.write("You can use the option to search for symtomps and identify the ICD Codes for it")
 
-    if st.button("Enter Symptoms"):
-        show_search_bar('B')
+   
+    search_query = st.text_input("")
 
-def show_search_bar(tile):
-    search_query = st.text_input(f"Search", "")
+    # Add functionality here
+    if st.button("Search"):
+        perform_search_tile_b(search_query)
 
+def perform_search_tile_a(query):
 
-    if st.button(f"Search"):
-        st.write(f"Searching for '{search_query}' in Tile {tile}")
+    st.write(f"Searching for '{query}'")
+
+def perform_search_tile_b(query):
+
+    st.write(f"Searching for '{query}'")
 
 if __name__ == "__main__":
     main()
