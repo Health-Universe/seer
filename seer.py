@@ -13,13 +13,15 @@ from medspacy.ner import TargetRule
 from medspacy.visualization import visualize_ent
 from spacy_streamlit import visualize_parser
 
-# @st.cache(allow_output_mutation=True)
+#----------------------------------------------------------------
+# Model Creation Function --------------------------------
+#----------------------------------------------------------------
 @st.cache_resource
 def loading_ml_model(): 
 
   #problemlist=["allergies","asthma","diabetes"]
   #medilist=["Claritin","Zyrtec","Ortho Tri-Cyclen","Allegra"]
-  diseaselist=["respiratory infection","persistent cough","shortness of breath","fever","Community-acquired pneumonia","deep vein thrombosis","pain","leg swelling"]
+  diseaselist=["respiratory infection","persistent cough","shortness of breath","fever","Community-acquired pneumonia","deep vein thrombosis","pain","leg swelling","bacterial infection","hypertension"]
   dglist=["antibiotics","anticoagulation therapy","doppler ultrasound ","chest X-ray"]
 
   #Getting disease list
@@ -54,16 +56,18 @@ def loading_ml_model():
       target_matcher.add(target_rules)
   print("Completed making rules in nlp model")
   return nlp
-
+#----------------------------------------------------------------
+# Post Processing Function --------------------------------
+#----------------------------------------------------------------
 def post_processing(doc):
-
+    # Creating empty list to store the identified entities.
     problem_label=[]
     medication_label=[]
     for ent in doc.ents:
         if ent.label_=='SYMPTOM':
-          problem_label.append(ent)
+          problem_label.append(str(ent))
         if ent.label_=='PROCEDURE':
-          medication_label.append(ent) 
+          medication_label.append(str(ent)) 
     print(problem_label)
     print(medication_label)
     prob_len=len(problem_label)
@@ -71,10 +75,17 @@ def post_processing(doc):
     st.subheader("Summary:")
     st.write(f" Total number of identified diseases/problems in the file : {prob_len}")
     st.write(f" Total number of identified medications prescribed in the file : {med_len}")
+    tab1,tab2=st.tabs(['Symptoms List','Procedure List'])
+    with tab1:
+       st.subheader('List of Symptoms Identified:')
+       st.table(problem_label)  
+    with tab2:
+       st.subheader('List of Medical Procedure Identified:')
+       st.table(medication_label)       
     pass
 
 #----------------------------------------------------------------
-# Main Functions --------------------------------
+# Main Function --------------------------------
 #----------------------------------------------------------------
 st.title('⚕️ S.E.E.R: System for Efficient Encoding and Reference')
 
