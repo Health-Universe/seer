@@ -11,7 +11,6 @@ def init_connection():
     username=st.secrets["db_username"]
     host=st.secrets["db_host"]
     uri = f"mongodb+srv://{username}:{pwd}@{host}/?retryWrites=true&w=majority"
-    st.write('secret fetch completed.')
     return pymongo.MongoClient(uri, server_api=ServerApi('1'))
 client = init_connection()
 collection_name = "icd10_codes"
@@ -50,8 +49,11 @@ search_term = st.text_input("Enter search term:")
 if search_term:
     # Perform search and display results
     results = searchICD(search_term)
+    # Convert results to a DataFrame for better display
+    df_results = pd.DataFrame(list(results))
     st.subheader("Search Results:")
-    for result in results:
-        st.write(result)
+    st.table(df_results[["ICD10_Code", "Description"]])
+    # for result in results:
+    #     st.write(result)
 
 st.write(items)
