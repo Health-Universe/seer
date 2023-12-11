@@ -3,8 +3,9 @@ import streamlit as st
 def main():
     st.title('⚕️ S.E.E.R: System for Efficient Encoding and Reference')
 
-    image_url = "https://example.jpg"  
-    st.image(image_url, caption="DNA IMAGE", use_column_width=True)
+    image_filename = "dna-banner.jpg"
+    
+    st.image(image_filename, use_column_width=True)
 
     # Section: What is ICD
     st.header("What is ICD?")
@@ -25,13 +26,15 @@ def main():
     # Section: Contributors
     st.header("Contributors")
 
+    # Create two columns
+    col1, col2 = st.columns(2)
+
     # Contributor 1
-    st.write("Arjun Raj")
-    st.write("[LinkedIn](https://www.linkedin.com/in/arjun-raj-pala/)")
+    col1.write("[Arjun Raj](https://www.linkedin.com/in/arjun-raj-pala/)")
 
     # Contributor 2
-    st.write("Akshaymon K")
-    st.write("[LinkedIn](https://www.linkedin.com/in/akshaymonkvn3/)")
+    col2.write("[Akshaymon K](https://www.linkedin.com/in/akshaymonkvn3/)")
+
 
 if __name__ == "__main__":
     main()
