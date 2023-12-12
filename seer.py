@@ -1,6 +1,3 @@
-
-
-
 # Importing libraries
 import pandas as pd
 import streamlit as st
@@ -85,13 +82,16 @@ def loading_ml_model():
 #----------------------------------------------------------------
 def post_processing(doc):
     # Creating empty list to store the identified entities.
-    problem_label=[]
-    procedure_label=[]
+    problem_label_initial=[]
+    procedure_label_intial=[]
     for ent in doc.ents:
         if ent.label_=='SYMPTOM':
-          problem_label.append(str(ent))
+          problem_label_initial.append(str(ent))
         if ent.label_=='PROCEDURE':
-          procedure_label.append(str(ent)) 
+          procedure_label_intial.append(str(ent))
+    # Removing the duplicate entries
+    problem_label = list(set(map(str.lower, problem_label_initial)))
+    procedure_label = list(set(map(str.lower, procedure_label_intial)))
     print(problem_label)
     print(procedure_label)
     icdCombineSearch(problem_label,procedure_label)       
