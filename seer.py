@@ -14,7 +14,7 @@ from pymongo.server_api import ServerApi
 from pymongo.mongo_client import MongoClient
 
 #----------------------------------------------------------------
-# Mongo DB Connection --------------------------------
+# Mongo DB Connection and Query Functions -----------------------
 #----------------------------------------------------------------
 
 @st.cache_resource
@@ -78,7 +78,7 @@ def loading_ml_model():
   print("Completed making rules in nlp model")
   return nlp
 #----------------------------------------------------------------
-# Post Processing Function --------------------------------
+# Post Processing Functions --------------------------------
 #----------------------------------------------------------------
 def post_processing(doc):
     # Creating empty list to store the identified entities.
@@ -100,18 +100,23 @@ def post_processing(doc):
 def icdCombineSearch(problem_label,procedure_label):
     prob_len=len(problem_label)
     med_len=len(procedure_label)
-    st.subheader("Summary:")
-    st.write(f" Total number of identified diseases/problems in the file : {prob_len}")
-    st.write(f" Total number of identified medications prescribed in the file : {med_len}")
+    sympData = {'Symptoms': problem_label}
+    sympDf = pd.DataFrame(sympData)
+    procedData = {'Procedures': procedure_label}
+    procedDf = pd.DataFrame(procedData)    
+    st.subheader("S.E.E.R Assessment Report 🩺")
+    st.markdown('---')
+    st.markdown(f" - Identified Diseases/Problems:  : **{prob_len}**")
+    st.markdown(f" - Medications Prescribed: **{med_len}**")
     tab1,tab2=st.tabs(['Symptoms List','Procedure List'])
     with tab1:
-       st.subheader('List of Symptoms Identified:')
-       st.table(problem_label)  
+       st.subheader('Health Assessment Report 🩺: Identified Symptoms')
+       st.table(sympDf)  
     with tab2:
-       st.subheader('List of Medical Procedure Identified:')
-       st.table(procedure_label)
-    st.subheader('S.E.E.R Results: Disease Name and Corresponding ICD10 Codes')
+       st.subheader('Health Assessment Report 🩺: Identified Medical Procedures')
+       st.table(procedDf)
     st.markdown('---')
+    st.subheader('S.E.E.R Results 📋: Disease Name and Corresponding ICD10 Codes')
     counter = 1   
     for icdData in problem_label:
          searchResult=searchICD(icdData)
@@ -149,8 +154,8 @@ def main():
     st.success('PDF processed successfully!')
     if st.button('Extract'):
       st.toast('Data Extraction is started',icon='😍')
-      st.subheader('Extracted Data:')
-      st.info('The  first page of PDF is only considered for processing!')
+      st.subheader('Data Extraction Summary  📋:')
+      st.info('Note: For prototype purposes, the application currently processes only the first page of the PDF or document. Full document processing will be available in future updates. ')
       number_of_pages = len(reader.pages)
       page = reader.pages[0]
       text_data = page.extract_text()
@@ -194,7 +199,7 @@ def main():
       doc=nlp(discharge_summary)
       # doc=nlp(uploaded_file.read())
       print("Extracted the data.")
-
+      st.success('✅ Symptoms and procedures successfully identified and highlighted for your review. ')
       # Adding colors to the rules
       colors = {"SYMPTOM": "orange", "PROCEDURE": "green"}
       options = {"colors": colors}
@@ -205,8 +210,8 @@ def main():
       highlighted_text = displacy.render(doc, style="ent", options=options, page=True)
       st.components.v1.html(highlighted_text, width=1000, height=1000, scrolling=True)
       print("Visualization Completed.")
-      print("Calling post processing function")
-      st.success('Term identification task completed using the model.')
+      print("Calling post processing function.")
+      st.success('✅ S.E.E.R Assessment Report generation is now completed.')
       post_processing(doc)
   else:
       st.warning("Upload a file to get started.")
