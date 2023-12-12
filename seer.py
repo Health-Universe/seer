@@ -117,6 +117,7 @@ def icdCombineSearch(problem_label,procedure_label):
        st.table(procedDf)
     st.markdown('---')
     st.subheader('S.E.E.R Results 📋: Disease Name and Corresponding ICD10 Codes')
+    st.success('Data analysis and code mapping completed successfully. Explore the detailed report below.')
     counter = 1   
     for icdData in problem_label:
          searchResult=searchICD(icdData)
@@ -151,7 +152,7 @@ def main():
   if(uploaded_file is not None):
     reader = PdfReader(uploaded_file)
     print("PDF processed successfully!")
-    st.success('PDF processed successfully!')
+    st.toast('PDF processing completed!')
     if st.button('Extract'):
       st.toast('Data Extraction is started',icon='😍')
       st.subheader('Data Extraction Summary  📋:')
