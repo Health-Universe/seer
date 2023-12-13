@@ -139,30 +139,10 @@ def icdCombineSearch(problem_label,procedure_label):
 client = init_connection() # Connecting to the DB.
 collection_name = "icd10_codes" # The Collection Name of the database.
 #----------------------------------------------------------------
-# Main Function --------------------------------
+# Input Functions --------------------------------
 #----------------------------------------------------------------
-def main():
-  st.title('⚕️ S.E.E.R: System for Efficient Encoding and Reference')
-  st.write('Identify the Diseases and corresponding ICD10 codes in a document with ease.')
-  uploaded_file = st.file_uploader("Choose a pdf file")
-  nlp=loading_ml_model()
-  st.success('Model loaded and ready for use.')
-  st.toast('Model loaded and ready for use.',icon='😍')
-  print("Completed loading the NLP model.")
-  if(uploaded_file is not None):
-    reader = PdfReader(uploaded_file)
-    print("PDF processed successfully!")
-    st.toast('PDF processing completed!')
-    if st.button('Extract'):
-      st.toast('Data Extraction is started',icon='😍')
-      st.subheader('Data Extraction Summary  📋:')
-      st.info('Note: For prototype purposes, the application currently processes only the first page of the PDF or document. Full document processing will be available in future updates. ')
-      number_of_pages = len(reader.pages)
-      page = reader.pages[0]
-      text_data = page.extract_text()
-
-      # Processing Data with nlp model
-      discharge_summary = """
+def textInputExtraction():
+    discharge_summary = """
         Discharge Summary
         Patient Information:
         Name: John Doe
@@ -195,27 +175,58 @@ def main():
         Anticoagulation Therapy : Continue as prescribed.
         Follow-up appointments are scheduled for continued care and monitoring.
         """
-      # doc = nlp(text_data)
-      # st.write(text_data)
-      doc=nlp(discharge_summary)
-      # doc=nlp(uploaded_file.read())
-      print("Extracted the data.")
-      st.success('✅ Symptoms and procedures successfully identified and highlighted for your review. ')
-      # Adding colors to the rules
-      colors = {"SYMPTOM": "orange", "PROCEDURE": "green"}
-      options = {"colors": colors}
-      visualize_ent(doc)
-      print("Starting visualization of the data....")
-      # Visualization of extracted data
-      # Concatenate the highlighted text into a single string
-      highlighted_text = displacy.render(doc, style="ent", options=options, page=True)
-      st.components.v1.html(highlighted_text, width=1000, height=1000, scrolling=True)
-      print("Visualization Completed.")
-      print("Calling post processing function.")
-      st.success('✅ S.E.E.R Assessment Report generation is now completed.')
-      post_processing(doc)
+    medical_data=st.text_area('Text to analyze',f'{discharge_summary}',height=400)
+    return medical_data
+    pass
+
+def docInputExtraction():
+      uploaded_file = st.file_uploader("Choose a pdf file")
+      if(uploaded_file is not None):
+        reader = PdfReader(uploaded_file)
+        number_of_pages = len(reader.pages)
+        page = reader.pages[0]
+        text_data = page.extract_text()
+        st.toast('PDF processing completed!')
+        st.info('Note: For prototype purposes, the application currently processes only the first page of the PDF or document. Full document processing will be available in future updates. ')
+        return text_data
+      else:
+          st.warning("Upload a file to get started.")
+      pass
+#----------------------------------------------------------------
+# Main Function --------------------------------
+#----------------------------------------------------------------
+def main():
+  st.title('⚕️ S.E.E.R: System for Efficient Encoding and Reference')
+  st.write('Identify the Diseases and corresponding ICD10 codes in a document with ease.')
+  on = st.toggle('Switch to Document Mode')
+  if on:
+       input_data=docInputExtraction()
   else:
-      st.warning("Upload a file to get started.")
+        input_data= textInputExtraction()
+  nlp=loading_ml_model()
+  st.success('✅ Model loaded and ready for use.')
+  st.toast('Model loaded and ready for use.',icon='😍')
+  print("Completed loading the NLP model.")
+  if st.button('Extract'):
+    st.toast('Data Extraction is started',icon='😍')
+    st.subheader('Data Extraction Summary  📋:')
+    # Processing Data with nlp model
+    doc=nlp(input_data)
+    print("Extracted the data.")
+    st.success('✅ Symptoms and procedures successfully identified and highlighted for your review. ')
+    # Adding colors to the rules
+    colors = {"SYMPTOM": "orange", "PROCEDURE": "green"}
+    options = {"colors": colors}
+    visualize_ent(doc)
+    print("Starting visualization of the data....")
+    # Visualization of extracted data
+    # Concatenate the highlighted text into a single string
+    highlighted_text = displacy.render(doc, style="ent", options=options, page=True)
+    st.components.v1.html(highlighted_text, width=1000, height=1000, scrolling=True)
+    print("Visualization Completed.")
+    print("Calling post processing function.")
+    st.success('✅ S.E.E.R Assessment Report generation is now completed.')
+    post_processing(doc)
 
 if __name__ == "__main__":
     main()
