@@ -13,6 +13,7 @@ import pymongo
 from pymongo.server_api import ServerApi
 from pymongo.mongo_client import MongoClient
 
+st.set_page_config(page_title="S.E.E.R", page_icon="⚕️",)
 #----------------------------------------------------------------
 # Mongo DB Connection and Query Functions -----------------------
 #----------------------------------------------------------------
@@ -227,6 +228,7 @@ def main():
     print("Calling post processing function.")
     st.success('✅ S.E.E.R Assessment Report generation is now completed.')
     post_processing(doc)
+    st.write('Made with ❤️  by team Inevitables.')
 
 if __name__ == "__main__":
     main()
