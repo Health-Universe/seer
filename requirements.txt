@@ -3,4 +3,4 @@ spacy
 PyPDF2
 medspacy
 spacy_streamlit
-pymongo==4.6.1
+pymongo

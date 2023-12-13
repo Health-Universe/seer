@@ -13,7 +13,7 @@ import pymongo
 from pymongo.server_api import ServerApi
 from pymongo.mongo_client import MongoClient
 
-st.set_page_config(page_title="S.E.E.R", page_icon="⚕️",)
+st.set_page_config(page_title="S.E.E.R", page_icon="⚕️")
 #----------------------------------------------------------------
 # Mongo DB Connection and Query Functions -----------------------
 #----------------------------------------------------------------
