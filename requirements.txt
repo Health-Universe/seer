@@ -1,6 +1,6 @@
 pandas
-spacy
+spacy==3.7.2
 PyPDF2
-medspacy
-spacy_streamlit
-pymongo
+medspacy==1.1.2
+spacy_streamlit==1.0.6
+pymongo==4.6.1
