@@ -1,6 +1,8 @@
 import streamlit as st
 import pymongo
 import pandas as pd
+from pymongo.server_api import ServerApi
+from pymongo.mongo_client import MongoClient
 
 @st.cache_resource
 def init_connection():
@@ -8,7 +10,8 @@ def init_connection():
     username = st.secrets["db_username"]
     host = st.secrets["db_host"]
     uri = f"mongodb+srv://{username}:{pwd}@{host}/?retryWrites=true&w=majority"
-    return pymongo.MongoClient(uri)
+    return pymongo.MongoClient(uri, server_api=ServerApi('1'))
+
 
 def get_collection(collection_name):
     db = client.icd10_data
@@ -20,7 +23,7 @@ collection_name = "icd10_codes"
 def main():
     st.title('⚕️ S.E.E.R: System for Efficient Encoding and Reference')
 
-    button_a = st.button("Search for ICD Codes", key="button_a")
+    button_a = st.button("Search for ICD Codes", key="button_a_main")
     button_b = st.button("Search for Symptoms", key="button_b")
 
     if button_a:
@@ -36,7 +39,7 @@ def expand_tile_a():
     search_query = st.text_input("Enter your search query")
 
     # Add functionality here
-    if st.button("Search") and search_query:  # Check if search query is not empty
+    if st.button("Search in Tile A", key="button_a_tile") and search_query:  # Unique key for tile A
         results = perform_search_tile_a(search_query)
         # Convert results to a DataFrame for better display
         df_results = pd.DataFrame(list(results))
@@ -50,7 +53,7 @@ def expand_tile_b():
     search_query = st.text_input("Enter your search query")  # Provide a label here
 
     # Add functionality here
-    if st.button("Search") and search_query:  # Check if search query is not empty
+    if st.button("Search in Tile B", key="button_b_tile") and search_query:  # Unique key for tile B
         results = perform_search_tile_b(search_query)
         # Convert results to a DataFrame for better display
         df_results = pd.DataFrame(list(results))
