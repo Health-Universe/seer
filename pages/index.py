@@ -4,6 +4,7 @@ import pandas as pd
 from pymongo.server_api import ServerApi
 from pymongo.mongo_client import MongoClient
 
+
 @st.cache_resource
 def init_connection():
     pwd = st.secrets["db_password"]
@@ -22,55 +23,54 @@ collection_name = "icd10_codes"
 
 def main():
     st.title('⚕️ S.E.E.R: System for Efficient Encoding and Reference')
+    on = st.toggle('Switch to ICD Code Search Mode') # Added toggle support instead of buttons.
+    if on:
+        icd10CodeSearchMode()
+    else:
+        symptomSearchMode()
 
-    button_a = st.button("Search for ICD Codes", key="button_a_main")
-    button_b = st.button("Search for Symptoms", key="button_b")
-
-    if button_a:
-        expand_tile_a()
-
-    if button_b:
-        expand_tile_b()
-
-def expand_tile_a():
+def icd10CodeSearchMode():
     st.header("ICD Code Search")
     st.write("You can use the option to search for ICD Codes and identify the diseases")
-
-    search_query = st.text_input("Enter your search query")
-
-    # Add functionality here
-    if st.button("Search in Tile A", key="button_a_tile") and search_query:  # Unique key for tile A
-        results = perform_search_tile_a(search_query)
+    icd_search_query = st.text_input("Enter your search query")
+    if st.button("Search ICD10 code", key="icd10_search_button") and icd_search_query:  # Unique key for tile A
+        results = icd10_search(icd_search_query)
         # Convert results to a DataFrame for better display
         df_results = pd.DataFrame(list(results))
-        st.subheader("Search Results:")
-        st.table(df_results[["ICD10_Code", "Description"]])
+        if not df_results.empty:
+            st.subheader("Search Results:")
+            st.table(df_results[["ICD10_Code", "Description"]])
+        else:
+           st.warning("No results were found!") 
 
-def expand_tile_b():
+def symptomSearchMode():
     st.header("Search for Symptoms")
     st.write("You can use the option to search for symptoms and identify the ICD Codes for it")
 
     search_query = st.text_input("Enter your search query")  # Provide a label here
 
     # Add functionality here
-    if st.button("Search in Tile B", key="button_b_tile") and search_query:  # Unique key for tile B
-        results = perform_search_tile_b(search_query)
+    if st.button("Search with Symptoms", key="symptom_button") and search_query:  # Unique key for tile B
+        results = symptomSearch(search_query)
         # Convert results to a DataFrame for better display
         df_results = pd.DataFrame(list(results))
-        st.subheader("Search Results:")
-        st.table(df_results[["ICD10_Code", "Description"]])
+        if not df_results.empty:
+            st.subheader("Search Results:")
+            st.table(df_results[["ICD10_Code", "Description"]])
+        else:
+            st.warning("No results were found!")
 
-def perform_search_tile_a(search_query):
+def icd10_search(icd_search_query):
     collection = get_collection(collection_name)
-    query = {"Description": {"$regex": search_query, "$options": "i"}}
-    # Perform the search
+    query = {"ICD10_Code": {"$regex": icd_search_query, "$options": "i"}}
+    # Perform the search for ICD 10 codes
     results = collection.find(query)
     return results
 
-def perform_search_tile_b(search_query):
+def symptomSearch(search_query):
     collection = get_collection(collection_name)
     query = {"Description": {"$regex": search_query, "$options": "i"}}
-    # Perform the search
+    # Perform the search for matching with the symptoms.
     results = collection.find(query)
     return results
 
