@@ -19,17 +19,20 @@ def main():
     st.write("""Imagine a tool designed to simplify the lives of doctors and medical coders,
                 making the complex world of ICD codes and symptom types easily accessible with just a few clicks. 
                 That's exactly what we've created with Seer! 🌟 Seer is not just a system; it's your ally in healthcare
-                documentation. Picture this: a web-based application built with Streamlit, the magic wand of interactive 
-                web development in Python. We wanted to make the whole process smoother, so we incorporated MedSpaCy, a 
-                specialized medical text processing library, into Seer. How does it work? You input your medical text, and 
-                Seer does the heavy lifting. It analyzes the document, sifts through the jargon, and extracts those elusive 
-                ICD10 codes. But we didn't stop there—Seer also gives you a friendly interface to search for specific terms 
-                and effortlessly generate ICD10 codes. And here's the cherry on top: Seer uses MedSpaCy to highlight those 
-                crucial code-related bits in the original text. It's not just about accuracy; it's about clarity and making your
-                job easier. With Seer, navigating the medical coding landscape becomes a breeze. Because your time is precious,
-                and we believe healthcare tech should be, too!
+                documentation. 
 
     """)
+
+    st.header("What exactly is S.E.E.R 🧑‍💻️")
+    st.write("""Picture this: A web-based application built with Streamlit, the magic wand 🧙 of interactive 
+                web development in Python. We wanted to make the whole process smoother, so we incorporated MedSpaCy⚕️, a 
+                specialized medical text processing library, into Seer. How does it work? You input your medical text🔠, and 
+                Seer does the heavy lifting🏋. It analyzes the document, sifts through the jargon, and extracts those elusive 
+                ICD10 codes🏆. But we didn't stop there—Seer also gives you a friendly interface to search for specific terms 
+                and effortlessly search ICD10 codes. And here's the cherry on top: Seer uses MedSpaCy to highlight those 
+                crucial code-related bits in the original text. It's not just about accuracy; it's about clarity and making your
+                job easier. With Seer, navigating the medical coding landscape becomes a breeze. Because your time⌛ is precious,
+                and we believe healthcare tech should be, too!❤️""")
 
     # Section: Contributors
     st.markdown("**Contributors 🧑‍🔧️:**")
