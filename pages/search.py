@@ -42,8 +42,6 @@ def icd10CodeSearchMode():
 
     icd_search_query = st.text_input("Enter your search query", value=session_state.icd_search_query)
 
-    if st.button("Clear", key="icd10_clear_button"):
-        session_state.icd_search_query = ""
 
       
     if st.button("Search ICD10 code", key="icd10_search_button") and icd_search_query:  # Unique key for tile A
@@ -55,6 +53,10 @@ def icd10CodeSearchMode():
             st.table(df_results[["ICD10_Code", "Description"]])
         else:
            st.warning("No results were found!") 
+
+    if st.button("Clear", key="icd10_clear_button"):
+        session_state.icd_search_query = ""
+
 
 
 
@@ -68,8 +70,7 @@ def symptomSearchMode():
 
     search_query = st.text_input("Enter your search query",  value=session_state.icd_search_query)  # Provide a label here
 
-    if st.button("Clear", key="icd10_clear_button"):
-        session_state.icd_search_query = ""
+
 
     # Add functionality here
     if st.button("Search with Symptoms", key="symptom_button"
@@ -83,6 +84,8 @@ def symptomSearchMode():
         else:
             st.warning("No results were found!")
 
+    if st.button("Clear", key="icd10_clear_button"):
+        session_state.icd_search_query = ""
    
 
 
