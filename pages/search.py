@@ -5,7 +5,7 @@ from pymongo.server_api import ServerApi
 from pymongo.mongo_client import MongoClient
 
 
-
+st.set_page_config(page_title="S.E.E.R", page_icon="⚕️")
 @st.cache_resource
 def init_connection():
     pwd = st.secrets["db_password"]
@@ -74,7 +74,7 @@ def icd10CodeSearchMode():
 
 def symptomSearchMode():
     st.header("Symptoms search 🦠")
-    st.write("You can use the option to search for symptoms and identify the ICD Codes for it")
+    st.write("You can use the option to search for symptoms and identify the ICD Codes for it.")
 
     session_state = st.session_state
     if not hasattr(session_state, 'icd_search_query'):

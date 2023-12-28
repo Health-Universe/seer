@@ -1,5 +1,5 @@
 import streamlit as st
-
+st.set_page_config(page_title="S.E.E.R", page_icon="⚕️")
 def main():
     st.title('⚕️ S.E.E.R: System for Efficient Encoding and Reference')
 
@@ -9,7 +9,9 @@ def main():
     st.header("What is ICD?  🤷")
     st.write("""Ever wondered how doctors🧑‍⚕️ and healthcare professionals universally identify and classify diseases?
                 Enter the International Classification of Diseases (ICD) 📕. It's like a global dictionary for health issues, 
-                helping everyone speak the same language when it comes to illnesses. Whether you're in New York🗽 or Tokyo🗼, the ICD
+                helping everyone speak the same language when it comes to illnesses.
+    """)
+    st.write("""Whether you're in New York🗽 or Tokyo🗼, the ICD
                 ensures that a specific condition is understood the same way worldwide. So, it's not just a code; it's the key to
                 a common understanding of health concerns across borders ✅.
     """)
