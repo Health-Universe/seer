@@ -22,6 +22,11 @@ def get_collection(collection_name):
 client = init_connection()
 collection_name = "icd10_codes"
 
+class SessionState:
+    def __init__(self):
+        self.icd_search_query = ""
+
+session_state = SessionState()
 
 
 def main():
@@ -54,18 +59,22 @@ def icd10CodeSearchMode():
             st.subheader("Search Results:")
             st.table(df_results[["ICD10_Code", "Description"]])
 
-            csv_data = df_results.to_csv(index=False).encode('utf-8')
-            st.download_button(
-                label="Download Results as CSV 💾",
-                data=csv_data,
-                file_name="icd_search_results.csv",
-                key="download_button"
-            )
+            if st.button("Download Results as CSV 💾", key="icd_download_button"):
+                download_symptom_results(df_results)
+
+          #   csv_data = df_results.to_csv(index=False).encode('utf-8')
+          #     st.download_button(
+          #       label="Download Results as CSV 💾",
+           #        data=csv_data,
+           #        file_name="icd_search_results.csv",
+           #        key="download_button"
+           #   ) 
+           
 
         else:
            st.warning("No results were found!") 
 
-        if clear_col.button("Regenerate🔄", key="icd10_clear_button"):
+        if clear_col.button("Clear results🔄", key="icd10_clear_button"):
          session_state.icd_search_query = ""
          icd_search_query = " "
 
@@ -80,7 +89,7 @@ def symptomSearchMode():
     if not hasattr(session_state, 'icd_search_query'):
         session_state.icd_search_query = ""
 
-    search_query = st.text_input("Enter your search query 🔎",  value=session_state.icd_search_query)  # Provide a label here
+    search_query = st.text_input("Enter your search query 🔎", value=session_state.icd_search_query)  # Provide a label here
 
     search_col, clear_col = st.columns(2)
 
@@ -104,11 +113,15 @@ def symptomSearchMode():
         else:
             st.warning("No results were found!")
 
-        if clear_col.button("Regenerate🔄", key="icd10_clear_button"):
-         session_state.icd_search_query = ""
-        # icd_search_query = " "
+        session_state.icd_search_query = search_query
    
 
+
+        if clear_col.button("Clear results🔄", key="icd10_clear_button"):
+         session_state.icd_search_query = ""
+        # icd_search_query = " "
+        
+        
 
 def icd10_search(icd_search_query):
     collection = get_collection(collection_name)
@@ -123,6 +136,15 @@ def symptomSearch(search_query):
     # Perform the search for matching with the symptoms.
     results = collection.find(query)
     return results
+
+def download_symptom_results(df_results):
+    csv_data = df_results.to_csv(index=False).encode('utf-8')
+    st.download_button(
+        label="Download Results as CSV 💾",
+        data=csv_data,
+        file_name="icd_code_search.csv",
+        key="icd_download_button"  # Use a different key for the download button
+    )
 
 if __name__ == "__main__":
     main()
