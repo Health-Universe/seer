@@ -175,7 +175,7 @@ def textInputExtraction():
         Antibiotics : Complete the prescribed course.
         Anticoagulation Therapy : Continue as prescribed.
         Follow-up appointments are scheduled for continued care and monitoring.
-        """
+        """   
     medical_data=st.text_area('Text to analyze',f'{discharge_summary}',height=400)
     return medical_data
     pass
@@ -198,14 +198,13 @@ def docInputExtraction():
 #----------------------------------------------------------------
 def main():
   st.title('⚕️ S.E.E.R: System for Efficient Encoding and Reference')
-  st.write('Identify the Diseases and corresponding ICD10 codes in a document with ease.')
-  on = st.toggle('Switch to Document Mode')
+  st.write('📕 Identify the Diseases and corresponding ICD10 codes in a document with ease 🔍 .')
+  on = st.toggle('Switch to Document Mode ➡️')
   if on:
        input_data=docInputExtraction()
   else:
         input_data= textInputExtraction()
   nlp=loading_ml_model()
-  st.success('✅ Model loaded and ready for use.')
   st.toast('Model loaded and ready for use.',icon='😍')
   print("Completed loading the NLP model.")
   if st.button('Extract'):
@@ -221,7 +220,6 @@ def main():
     visualize_ent(doc)
     print("Starting visualization of the data....")
     # Visualization of extracted data
-    # Concatenate the highlighted text into a single string
     highlighted_text = displacy.render(doc, style="ent", options=options, page=True)
     st.components.v1.html(highlighted_text, width=1000, height=1000, scrolling=True)
     print("Visualization Completed.")
