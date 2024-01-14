@@ -1,6 +1,8 @@
 # S.E.E.R: System for Efficient Encoding and Reference
 
-Welcome to [S.E.E.R](https://whatismyicdcode.streamlit.app/), your ally in healthcare documentation! 🌟 This web-based application simplifies the complex world of ICD codes and symptom types, making it easily accessible with just a few clicks.
+Welcome to [S.E.E.R](https://whatismyicdcode.streamlit.app/), your ally in healthcare documentation! 🌟 
+
+This web-based application simplifies the complex world of ICD codes and symptom types, making it easily accessible with just a few clicks.
 
 ## What is ICD? 🤷
 
