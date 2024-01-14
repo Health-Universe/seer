@@ -1,6 +1,6 @@
 # S.E.E.R: System for Efficient Encoding and Reference
 
-Welcome to S.E.E.R., your ally in healthcare documentation! 🌟 This web-based application simplifies the complex world of ICD codes and symptom types, making it easily accessible with just a few clicks.
+Welcome to [S.E.E.R](https://whatismyicdcode.streamlit.app/), your ally in healthcare documentation! 🌟 This web-based application simplifies the complex world of ICD codes and symptom types, making it easily accessible with just a few clicks.
 
 ## What is ICD? 🤷
 
@@ -32,6 +32,22 @@ pip install -r requirements.txt
 streamlit run seer.py
 
 ```
+# Screenshots
+![Seer  ICD10 Code generator](https://github.com/ArjunRAj77/seer/assets/23217592/f8c2042c-ae51-4b58-9db1-2824437340e9)
+
+![Seer  ICD10 Code generator (1)](https://github.com/ArjunRAj77/seer/assets/23217592/5f4451a2-26ec-4c35-aedb-c44352c80171)
+![Seer  ICD10 Code generator (2)](https://github.com/ArjunRAj77/seer/assets/23217592/1b43563e-6617-4bd9-9aa7-2ae8de34bf7b)
+
+![Seer  ICD10 Code generator (3)](https://github.com/ArjunRAj77/seer/assets/23217592/50fa793e-2b86-4c16-ab07-4825a1b19fc8)
+![Seer  ICD10 Code generator (4)](https://github.com/ArjunRAj77/seer/assets/23217592/6d0f06bf-ca09-45c7-8dad-8fb464b8b29c)
+![Seer  ICD10 Code generator (5)](https://github.com/ArjunRAj77/seer/assets/23217592/4ddec96b-a54c-49d6-86bd-70a15fd603c8)
+![Seer  ICD10 Code generator (6)](https://github.com/ArjunRAj77/seer/assets/23217592/396606d8-0d57-4930-a545-99af193f3347)
+![Seer  ICD10 Code generator (7)](https://github.com/ArjunRAj77/seer/assets/23217592/8656b0a7-d850-4a80-993a-127e98d161f1)
+
+
+
+
+
 # Resources
 
 - A sample data set for reference is being used : [Charmhealth Hackathon Resource Files](https://workdrive.zohoexternal.com/external/f5c821ad2d5bf1245b2110efe1c66a2cb3db7aa4f4bd0a7dbcb617cd61c8b20e?layout=list)
