@@ -4,12 +4,19 @@ All notable changes to this project will be documented in this file.
 ## [0.0.0-alpha]
 
 ### Added
-- 
+- screenshots of the project.
+- Added prototype mode to showcase full functionality.
+- publically hosted the project in streamlit cloud.
+- Added more code coverage of ICD10 db to the project.
+- Added more rules to the ml seer model .
+- Added more reference database to the project.
+
 ### Changed
-- 
+- Removed the connect.py file from the project.
+- Removed unwanted dependencies.
 
 ### Fixed
-- 
+- Fixed the disease related terms.
 
 ## [Unreleased]
 

@@ -6,6 +6,7 @@ import spacy
 from spacy import displacy
 from PyPDF2 import PdfReader
 import medspacy
+from PyRuSH import PyRuSHSentencizer
 from medspacy.ner import TargetRule
 from medspacy.visualization import visualize_ent
 from spacy_streamlit import visualize_parser
@@ -35,35 +36,59 @@ def searchICD(search_term):
     results = collection.find(query)
     return results
 
+
+
 #----------------------------------------------------------------
 # Model Creation Function --------------------------------
 #----------------------------------------------------------------
 @st.cache_resource
+# This model is currently in fine tuning works, the function is currently able to identify single dieseae words, but need to implement the ways to combine multiple together.
+def load_nlp_model():
+    print("Reading the dataset")
+    # icd10_df = pd.read_csv('content/icd10_codes.csv')
+    # keywordsdf = pd.read_csv('content/diseaselist.csv')
+    keywordsdf = pd.read_csv('content/disease_terms.csv')
+    drugdf = pd.read_csv('content/drugdataset.csv')
+    druglist = drugdf['drugName'].tolist()
+    dglist = [x for x in druglist]
+    #keywordslist=keywordsdf['Code Description'].tolist()
+    keywordslist=keywordsdf['Keywords'].tolist()
+    diseaselist = [x for x in keywordslist ]
+    print("Dataset reading completed successfully.")
+    # Load medspacy model
+    nlp = medspacy.load()
+    print(nlp.pipe_names)
+    print("Started adding rules to nlp model..........")
+    # Add a generic rule for diseases
+    target_matcher = nlp.get_pipe("medspacy_target_matcher")
+    for disease in diseaselist:
+        target_rules = [TargetRule(disease, "SYMPTOM")]
+        print(target_rules)
+        target_matcher.add(target_rules)
+        print("Counter flag ")
+    print(target_matcher)
+    # disease_rule = [TargetRule(disease, "SYMPTOM") for disease in diseaselist]
+    print("created the diesease rule..........")
+    # Add a generic rule for drugs
+    drug_rule = [TargetRule(drug, "PROCEDURE") for drug in dglist]
+    print("created the drug rule..........")
+    target_matcher.add(drug_rule)
+    print("Completed making rules in nlp model")      
+
+    return nlp
+
+
+
+@st.cache_resource
+# This model uses a refernece list to provide a prototype feedback to showcase the functioning of the tool.
 def loading_ml_model(): 
+  diseaselist=["respiratory infection","persistent cough","shortness of breath","fever","Community-acquired pneumonia","deep vein thrombosis","pain","leg swelling","bacterial infection","hypertension","elevated white blood cell count"]
+  dglist=["antibiotics","anticoagulation therapy","doppler ultrasound ","chest X-ray","supportive care"]
 
-  #problemlist=["allergies","asthma","diabetes"]
-  #medilist=["Claritin","Zyrtec","Ortho Tri-Cyclen","Allegra"]
-  diseaselist=["respiratory infection","persistent cough","shortness of breath","fever","Community-acquired pneumonia","deep vein thrombosis","pain","leg swelling","bacterial infection","hypertension"]
-  dglist=["antibiotics","anticoagulation therapy","doppler ultrasound ","chest X-ray"]
-
-  #Getting disease list
-  # diseasedf = pd.read_csv('content/diseasedataset.csv')
-  # diseaselist = diseasedf['diseasename'].tolist()
-  # print("Completed loading disease dataset.")
-
-  # Getting drug list
-  # drugdf = pd.read_csv('content/drugdataset.csv')
-  # druglist = drugdf['drugName'].tolist()
-  # dglist=[]
-
-  # Here we are only using 2000 drugs names as input to maintain 
-  # for x in druglist:
-  #     dglist.append(x)
-  print("Completed loading drug dataset.")
+  print("Completed loading drug and disease list .")
 
   
   # Load medspacy model
-
   nlp = medspacy.load()
   print(nlp.pipe_names)
   print("Started adding rules to nlp model..........")
@@ -204,7 +229,11 @@ def main():
        input_data=docInputExtraction()
   else:
         input_data= textInputExtraction()
-  nlp=loading_ml_model()
+  prototype_mode = st.toggle('Prototype Mode ➡️',value=True)
+  if prototype_mode:
+    nlp=loading_ml_model()
+  else:
+    nlp=load_nlp_model()
   st.toast('Model loaded and ready for use.',icon='😍')
   print("Completed loading the NLP model.")
   if st.button('Extract'):
