@@ -19,6 +19,7 @@ st.set_page_config(page_title="S.E.E.R", page_icon="⚕️")
 # Mongo DB Connection and Query Functions -----------------------
 #----------------------------------------------------------------
 
+# Function to connect to the MongoDB Instance.
 @st.cache_resource
 def init_connection():
     pwd=st.secrets["db_password"]
@@ -39,19 +40,19 @@ def searchICD(search_term):
 
 
 #----------------------------------------------------------------
-# Model Creation Function --------------------------------
+# Machine Learning Model Creation Functions ---------------------
 #----------------------------------------------------------------
+
+# Model 1 : Disease Identifier Model
+# This model is currently in fine tuning works, the function is currently able to identify single disease-related words, but need to implement the ways to identify combination of words.
+
 @st.cache_resource
-# This model is currently in fine tuning works, the function is currently able to identify single dieseae words, but need to implement the ways to combine multiple together.
 def load_nlp_model():
     print("Reading the dataset")
-    # icd10_df = pd.read_csv('content/icd10_codes.csv')
-    # keywordsdf = pd.read_csv('content/diseaselist.csv')
     keywordsdf = pd.read_csv('content/disease_terms.csv')
     drugdf = pd.read_csv('content/drugdataset.csv')
     druglist = drugdf['drugName'].tolist()
     dglist = [x for x in druglist]
-    #keywordslist=keywordsdf['Code Description'].tolist()
     keywordslist=keywordsdf['Keywords'].tolist()
     diseaselist = [x for x in keywordslist ]
     print("Dataset reading completed successfully.")
@@ -67,27 +68,21 @@ def load_nlp_model():
         target_matcher.add(target_rules)
         print("Counter flag ")
     print(target_matcher)
-    # disease_rule = [TargetRule(disease, "SYMPTOM") for disease in diseaselist]
     print("created the diesease rule..........")
     # Add a generic rule for drugs
     drug_rule = [TargetRule(drug, "PROCEDURE") for drug in dglist]
     print("created the drug rule..........")
     target_matcher.add(drug_rule)
     print("Completed making rules in nlp model")      
-
     return nlp
 
-
-
-@st.cache_resource
+# Model 2 : Prototype Disease Identifier Model
 # This model uses a refernece list to provide a prototype feedback to showcase the functioning of the tool.
+@st.cache_resource
 def loading_ml_model(): 
   diseaselist=["respiratory infection","persistent cough","shortness of breath","fever","Community-acquired pneumonia","deep vein thrombosis","pain","leg swelling","bacterial infection","hypertension","elevated white blood cell count"]
   dglist=["antibiotics","anticoagulation therapy","doppler ultrasound ","chest X-ray","supportive care"]
-
-  print("Completed loading drug and disease list .")
-
-  
+  print("Completed loading drug and disease list .")  
   # Load medspacy model
   nlp = medspacy.load()
   print(nlp.pipe_names)
@@ -106,6 +101,8 @@ def loading_ml_model():
 #----------------------------------------------------------------
 # Post Processing Functions --------------------------------
 #----------------------------------------------------------------
+
+# This post processing function will search for related ICD Codes from the MongoDB database.
 def post_processing(doc):
     # Creating empty list to store the identified entities.
     problem_label_initial=[]
@@ -123,6 +120,7 @@ def post_processing(doc):
     icdCombineSearch(problem_label,procedure_label)       
     pass
 
+# This function will search for related ICD Codes from the MongoDB database.
 def icdCombineSearch(problem_label,procedure_label):
     prob_len=len(problem_label)
     med_len=len(procedure_label)
@@ -167,6 +165,8 @@ collection_name = "icd10_codes" # The Collection Name of the database.
 #----------------------------------------------------------------
 # Input Functions --------------------------------
 #----------------------------------------------------------------
+
+# This function is used to use text input from user.
 def textInputExtraction():
     discharge_summary = """
         Discharge Summary
@@ -205,6 +205,8 @@ def textInputExtraction():
     return medical_data
     pass
 
+# This function is used to use document input from user.
+# Currently , it only supports PDF documents.
 def docInputExtraction():
       uploaded_file = st.file_uploader("Choose a pdf file")
       if(uploaded_file is not None):
@@ -218,6 +220,7 @@ def docInputExtraction():
       else:
           st.warning("Upload a file to get started.")
       pass
+
 #----------------------------------------------------------------
 # Main Function --------------------------------
 #----------------------------------------------------------------
