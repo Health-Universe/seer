@@ -1,4 +1,6 @@
 # S.E.E.R: System for Efficient Encoding and Reference
+![S E E R-banner](https://github.com/ArjunRAj77/seer/assets/23217592/76b95e7d-6f61-45e0-8e84-bf76f674284a)
+
 
 Welcome to [S.E.E.R](https://whatismyicdcode.streamlit.app/), your ally in healthcare documentation! 🌟 
 
