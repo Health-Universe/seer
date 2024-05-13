@@ -1,4 +1,4 @@
-python==3.9.2
+python==3.9.19
 pandas ==2.1.2
 spacy
 PyPDF2==3.0.1
