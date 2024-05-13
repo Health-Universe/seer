@@ -1,8 +1,9 @@
-pandas
-spacy==3.7.2
+pandas ==2.1.2
+spacy
 PyPDF2==3.0.1
-medspacy==1.0.1
+medspacy
 spacy_streamlit==1.0.6
 pymongo==4.6.1
-ipython
+ipython==8.16.1
 streamlit==1.28.0
+
