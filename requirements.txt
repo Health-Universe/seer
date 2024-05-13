@@ -1,5 +1,5 @@
 pandas ==2.1.2
-spacy==3.7.4
+spacy
 PyPDF2==3.0.1
 medspacy==1.1.6
 spacy_streamlit==1.0.6
